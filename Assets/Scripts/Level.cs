@@ -8,25 +8,24 @@ public class Level : MonoBehaviour
     // Start is called before the first frame update
     [SerializeField] private Transform prefabPipeBottom;
     [SerializeField] private Transform prefabPipeTop;
+    private float boundaryMaxY = 8f;
 
     float minPipeHeight = 0.5f;
-    float maxPipeHeight =  1f;
+    float maxPipeHeight =  1.5f;
     void Start()
     {
-        prefabPipeTop.localRotation *= Quaternion.Euler(180, 0, 0);
-
-        // prefabPipeTop.transform.localScale = new Vector3( prefabPipeTop.transform.localScale.x,  
-        //                                                     getRandomPipeHeight(), 
-        //                                                     prefabPipeTop.transform.localScale.z);
-            // prefabPipeBottom.transform.localScale = new Vector3( prefabPipeTop.transform.localScale.x,  
-            //                                                 getRandomPipeHeight(), 
-            //                                                 prefabPipeTop.transform.localScale.z);
         
         for(int i = 0; i < 5; i++){
          
-            Instantiate(prefabPipeTop, new Vector3(5f * i, 5f, 0), prefabPipeTop.localRotation);
-            Instantiate(prefabPipeBottom, new Vector3(5f * i, 2.6f, 0), Quaternion.identity);
+            var pipeTop = Instantiate(prefabPipeTop, new Vector3(5f * i, 5f, 0), Quaternion.identity);
+            var pipeBottom = Instantiate(prefabPipeBottom, new Vector3(5f * i, 2.6f, 0), Quaternion.identity);
 
+            pipeTop.localRotation *= Quaternion.Euler(180, 0, 0);
+            pipeTop.transform.localScale = new Vector3( pipeTop.transform.localScale.x,  
+                                                            getRandomPipeHeight(), 
+                                                            pipeTop.transform.localScale.z);
+            var pipeTopOffset = new Vector3(0, boundaryMaxY - pipeTop.transform.lossyScale.y/2, 0);
+            pipeTop.transform.position += pipeTopOffset;
         }
         
     }
