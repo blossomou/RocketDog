@@ -7,7 +7,10 @@ public class Player : MonoBehaviour
    
     [SerializeField] private LayerMask playerMask; 
     [SerializeField] private GameState gameState;
+    [SerializeField] private float jumpPower = 4f;
+    
     bool isJumpPressed; 
+    
     Rigidbody rigidBody;  
 
     // Start is called before the first frame update
@@ -30,7 +33,9 @@ public class Player : MonoBehaviour
     private void FixedUpdate() {
 
         if(isJumpPressed){
-           rigidBody.AddForce(Vector3.up * 5, ForceMode.VelocityChange);
+        //    rigidBody.AddForce(Vector3.up * 5, ForceMode.VelocityChange);
+            var newVelocity = Vector3.up * jumpPower;
+            rigidBody.velocity = newVelocity;
 
             isJumpPressed = false;
         }
