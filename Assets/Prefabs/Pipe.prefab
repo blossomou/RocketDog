@@ -238,3 +238,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
+  gameState: {fileID: 11400000, guid: 31fd7e71f84f2b398aafa6f9cddc9b80, type: 2}

@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private Transform groundCheckTransform = null; 
+   
     [SerializeField] private LayerMask playerMask; 
-
+    [SerializeField] private GameState gameState;
     bool isJumpPressed; 
     Rigidbody rigidBody;  
+
     // Start is called before the first frame update
     void Start()
     {
+        gameState.isPlayerDead = false;
+
         rigidBody = GetComponent<Rigidbody>();
     }
 
@@ -25,14 +28,17 @@ public class Player : MonoBehaviour
         
     }
     private void FixedUpdate() {
-         if(Physics.OverlapSphere(groundCheckTransform.position, 0.1f, playerMask).Length > 0){
-            Debug.Log("RocketDog, you are dead");
-        }
+
         if(isJumpPressed){
            rigidBody.AddForce(Vector3.up * 5, ForceMode.VelocityChange);
 
             isJumpPressed = false;
         }
+    }
+
+    private void OnCollisionEnter(Collision other) {
+        gameState.isPlayerDead = true;
+        //Debug.Log("Rocket dog you are dead");
     }
 
     
