@@ -6,26 +6,34 @@ using Random = UnityEngine.Random;
 public class Level : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField] private Transform prefabPipeBottom;
-    [SerializeField] private Transform prefabPipeTop;
+    [SerializeField] private Transform prefabPipe;
     private float boundaryMaxY = 8f;
 
     float minPipeHeight = 0.5f;
-    float maxPipeHeight =  1.5f;
+    float maxPipeHeight =  4f;
     void Start()
     {
         
         for(int i = 0; i < 5; i++){
+            var randomPipeHeight = getRandomPipeHeight();
          
-            var pipeTop = Instantiate(prefabPipeTop, new Vector3(5f * i, 5f, 0), Quaternion.identity);
-            var pipeBottom = Instantiate(prefabPipeBottom, new Vector3(5f * i, 2.6f, 0), Quaternion.identity);
+            var pipeTop = Instantiate(prefabPipe, new Vector3(5f * i, 0, 0), Quaternion.identity);
+            var pipeBottom = Instantiate(prefabPipe, new Vector3(5f * i, 1f, 0), Quaternion.identity);
 
+            Debug.Log(randomPipeHeight/2);
+        
             pipeTop.localRotation *= Quaternion.Euler(180, 0, 0);
-            pipeTop.transform.localScale = new Vector3( pipeTop.transform.localScale.x,  
-                                                            getRandomPipeHeight(), 
-                                                            pipeTop.transform.localScale.z);
-            var pipeTopOffset = new Vector3(0, boundaryMaxY - pipeTop.transform.lossyScale.y/2, 0);
-            pipeTop.transform.position += pipeTopOffset;
+            var pipeBody = pipeTop.Find("PipeBody");
+            pipeBody.transform.localScale = new Vector3(pipeBody.transform.localScale.x,  
+                                                            randomPipeHeight, 
+                                                            pipeBody.transform.localScale.z);
+          var meshFilter = pipeBody.GetComponent<MeshFilter>();
+          Debug.Log("MeshFilter.max.y " +  meshFilter.mesh.bounds.max.y );
+          Debug.Log("MeshFilter.min.y " +  meshFilter.mesh.bounds.min.y );
+
+          var pipeHeight = meshFilter.mesh.bounds.max.y -  meshFilter.mesh.bounds.min.y;
+          pipeTop.position = new Vector3(pipeTop.position.x, boundaryMaxY - pipeHeight/2, pipeTop.position.z);
+ 
         }
         
     }
